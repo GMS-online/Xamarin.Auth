@@ -19,10 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 
-using AuthenticateUIType =
-            Android.Content.Intent
-            //System.Object
-            ;
+using AuthenticateUIType = System.Object;
 using UIContext =
             Android.Content.Context
             //Android.App.Activity

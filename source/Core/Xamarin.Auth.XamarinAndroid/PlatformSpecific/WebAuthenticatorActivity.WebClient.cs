@@ -80,6 +80,9 @@ namespace Xamarin.Auth._MobileServices
                 }
                 else
                 {
+                    //OnPageFinished event is not fired when loding is interrupted with this callback
+                    var uri = new Uri(url);
+                    activity.state.Authenticator.OnPageLoaded(uri);
                     should_override = true;
                 }
 

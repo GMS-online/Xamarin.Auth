@@ -17,11 +17,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-
-using AuthenticateUIType =
-            Android.Content.Intent
-            //System.Object
-            ;
+using Android.App;
+using Android.Content;
+using AuthenticateUIType = System.Object;
 using UIContext =
             Android.Content.Context
             //Android.App.Activity
@@ -64,6 +62,28 @@ namespace Xamarin.Auth._MobileServices
         }
 
         /// <summary>
+        /// Gets the UI for this authenticator.
+        /// </summary>
+        /// <returns>
+        /// The UI that needs to be presented.
+        /// </returns>
+        protected override AuthenticateUIType GetPlatformUI()
+        {
+            System.Object ui = null;
+            if (this.IsUsingNativeUI == true)
+            {
+                ui = GetPlatformUINative(Application.Context);
+            }
+            else
+            {
+                ui = GetPlatformUIEmbeddedBrowser(Application.Context);
+            }
+
+            return ui;
+        }
+
+
+        /// <summary>
         /// Gets the platform  UI (Android - WebView).
         /// </summary>
         /// <returns>
@@ -74,7 +94,7 @@ namespace Xamarin.Auth._MobileServices
         protected AuthenticateUIType GetPlatformUIEmbeddedBrowser(UIContext context)
         {
             // Embedded Browser - Deprecated
-            AuthenticateUIType ui = new AuthenticateUIType(context, typeof(WebAuthenticatorActivity));
+            Intent ui = new Intent(context, typeof(WebAuthenticatorActivity));
             ui.PutExtra("ClearCookies", ClearCookiesBeforeLogin);
             var state = new WebAuthenticatorActivity.State
             {

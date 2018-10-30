@@ -1,4 +1,6 @@
-﻿#if !AZURE_MOBILE_SERVICES
+﻿using Android.Content;
+
+#if !AZURE_MOBILE_SERVICES
 namespace Xamarin.Auth.Presenters.XamarinAndroid
 #else
 namespace Xamarin.Auth._MobileServices.Presenters.XamarinAndroid
@@ -12,7 +14,7 @@ namespace Xamarin.Auth._MobileServices.Presenters.XamarinAndroid
     {
         public void Login(Authenticator authenticator)
         {
-            AuthenticationConfiguration.Context.StartActivity(authenticator.GetUI(AuthenticationConfiguration.Context));
+            AuthenticationConfiguration.Context.StartActivity((Intent) authenticator.GetUI(AuthenticationConfiguration.Context));
         }
     }
 }

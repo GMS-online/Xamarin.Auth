@@ -17,12 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
+using Android.App;
 using Xamarin.Utilities;
 
-using AuthenticateUIType =
-            Android.Content.Intent
-            //System.Object
-            ;
+using AuthenticateUIType = System.Object;
 using UIContext =
             Android.Content.Context
             //Android.App.Activity
@@ -51,6 +49,16 @@ namespace Xamarin.Auth._MobileServices
         }
 
         protected abstract AuthenticateUIType GetPlatformUI(UIContext context);
+
+
+        public AuthenticateUIType GetUI()
+        {
+            this.context = Application.Context;
+            return GetPlatformUI();
+        }
+        
+
+        protected abstract AuthenticateUIType GetPlatformUI();
     }
 }
 

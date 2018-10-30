@@ -1,10 +1,8 @@
 ﻿using System;
-
-using AuthenticateUIType =
-            Android.Content.Intent
+using Android.Content;
+using AuthenticateUIType = System.Object;
             //global::Android.Support.CustomTabs.CustomTabsIntent.Builder // not an Intent
-            //System.Object
-            ;
+            
 using UIContext =
             Android.Content.Context
             //Android.App.Activity
@@ -45,7 +43,7 @@ namespace Xamarin.Auth._MobileServices
             System.Uri uri_netfx = this.GetInitialUrlAsync().Result;
             global::Android.Net.Uri uri_android = global::Android.Net.Uri.Parse(uri_netfx.AbsoluteUri);
             CustomTabsConfiguration.UriAndroidOS = uri_android;
-            AuthenticateUIType ui = new AuthenticateUIType(context, typeof(WebAuthenticatorNativeBrowserActivity));
+            Intent ui = new Intent(context, typeof(WebAuthenticatorNativeBrowserActivity));
             ui.PutExtra("ClearCookies", ClearCookiesBeforeLogin);
             var state = new WebAuthenticatorNativeBrowserActivity.State
 			{

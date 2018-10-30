@@ -79,6 +79,8 @@ namespace Xamarin.Auth._MobileServices
 
         bool reportedForgery = false;
 
+        public string UserAgent { get; set; }
+
         #region
         //---------------------------------------------------------------------------------------
         /// Pull Request - manually added/fixed
@@ -120,6 +122,10 @@ namespace Xamarin.Auth._MobileServices
             get
             {
                 return this.authorizeUrl;
+            }
+            set
+            {
+                this.authorizeUrl = value;
             }
         }
 
@@ -335,10 +341,6 @@ namespace Xamarin.Auth._MobileServices
             if (authorizeUrl == null)
             {
                 throw new ArgumentNullException("authorizeUrl");
-            }
-            if (accessTokenUrl == null)
-            {
-                throw new ArgumentNullException("accessTokenUrl");
             }
             if (redirectUrl == null)
             {
@@ -608,7 +610,9 @@ namespace Xamarin.Auth._MobileServices
                 }
             }
 
-            #if DEBUG
+            oauth_request_query_parameters.Add("prompt", "login");
+
+#if DEBUG
             System.Diagnostics.Debug.WriteLine("OAuth Query Parameters CUSTOMIZED:");
             foreach (KeyValuePair<string, string> kvp in oauth_request_query_parameters)
             {
@@ -870,10 +874,15 @@ namespace Xamarin.Auth._MobileServices
         {
             // mc++ changed protected to public for extension methods RefreshToken (Adrian Stevens) 
             var content = new FormUrlEncodedContent(queryValues);
-
-
+            
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.PostAsync(accessTokenUrl, content).ConfigureAwait(false);
+            HttpRequestMessage Message = new HttpRequestMessage(HttpMethod.Post, this.accessTokenUrl);
+            Message.Content = content;
+            if (this.UserAgent != null)
+            {
+                Message.Headers.Add(@"User-Agent", this.UserAgent);
+            }
+            HttpResponseMessage response = await client.SendAsync(Message).ConfigureAwait(false);
             string text = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             // Parse the response
